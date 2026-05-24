@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPanel.ai - IDE Workspace</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    
+    <div class="app-container">
+        <!-- 1. VS Code Left Activity Bar -->
+        <aside class="activity-bar">
+            <div class="activity-top">
+                <div class="activity-icon active" title="Explorer" data-target="explorer"><i class="fa-regular fa-copy"></i></div>
+                <div class="activity-icon" title="Search"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div class="activity-icon" title="Source Control"><i class="fa-solid fa-code-branch"></i></div>
+                <div class="activity-icon" title="Gemini AI Assistant" data-target="chat"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            </div>
+            <div class="activity-bottom">
+                <div class="activity-icon" title="Settings"><i class="fa-solid fa-gear"></i></div>
+            </div>
+        </aside>
+
+        <!-- 2. VS Code Sidebar Explorer Pane -->
+        <aside class="sidebar-pane" id="explorer-sidebar">
+            <div class="sidebar-header">
+                <span>EXPLORER: PRACTISE</span>
+                <i class="fa-solid fa-ellipsis"></i>
+            </div>
+            <div class="sidebar-section">
+                <div class="section-title"><i class="fa-solid fa-chevron-down"></i> Code files</div>
+                <div class="sidebar-files">
+                    <div class="file-item folder"><i class="fa-solid fa-chevron-right"></i> <i class="fa-solid fa-folder"></i> .venv</div>
+                    <div class="file-item folder"><i class="fa-solid fa-chevron-right"></i> <i class="fa-solid fa-folder"></i> static</div>
+                    <div class="file-item"><i class="fa-solid fa-file-code text-accent"></i> genai_app.py</div>
+                    <div class="file-item active"><i class="fa-solid fa-file-code text-accent"></i> main.py</div>
+                    <div class="file-item"><i class="fa-solid fa-file-lines text-muted"></i> pyproject.toml</div>
+                    <div class="file-item"><i class="fa-solid fa-file-lines text-muted"></i> requirements.txt</div>
+                    <div class="file-item"><i class="fa-solid fa-file-lines text-muted"></i> README.md</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 3. Center Workspace: Editor (Top) & Terminal (Bottom) -->
+        <div class="ide-body">
+            <!-- Top Section: Monaco Code Editor -->
+            <section class="pane pane-editor">
+                <div class="pane-header">
+                    <div class="pane-title">
+                        <div class="tab-item active">
+                            <i class="fa-solid fa-file-code text-accent"></i>
+                            <span>main.py</span>
+                            <i class="fa-solid fa-xmark tab-close"></i>
+                        </div>
+                    </div>
+                    <div class="header-controls">
+                        <div class="control-group">
+                            <select id="template-select">
+                                <option value="hello">Hello World</option>
+                                <option value="summarize">FastAPI Summarizer Test</option>
+                                <option value="analytics">ASCII Data Analytics</option>
+                                <option value="regex">Pattern Validator</option>
+                            </select>
+                        </div>
+                        <button id="format-btn" class="header-icon-btn" title="Format Code"><i class="fa-solid fa-align-left"></i></button>
+                        <button id="clear-editor-btn" class="header-icon-btn" title="Clear Editor"><i class="fa-solid fa-trash-can"></i></button>
+                        <button id="run-btn" class="btn btn-primary btn-glow">
+                            <i class="fa-solid fa-play"></i> Run Code
+                        </button>
+                    </div>
+                </div>
+                <div class="pane-body editor-body">
+                    <div id="editor-container"></div>
+                </div>
+                <div class="pane-footer">
+                    <span id="editor-stats">Lines: 1 | Chars: 0</span>
+                    <span class="status-indicator">
+                        <span class="status-dot online"></span>
+                        <span class="status-label">Backend Connected</span>
+                    </span>
+                    <span id="editor-status">Ready</span>
+                </div>
+            </section>
+
+            <!-- Bottom Section: Terminal & Diagnostics Tabs -->
+            <section class="pane pane-bottom">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="terminal">
+                        Terminal
+                    </button>
+                    <button class="tab-btn" data-tab="metrics">
+                        Diagnostics
+                    </button>
+                </div>
+                
+                <div class="tabs-content">
+                    <!-- Terminal Tab -->
+                    <div id="tab-terminal" class="tab-pane active">
+                        <div class="terminal-container">
+                            <div class="terminal-bar">
+                                <span class="terminal-indicator">powershell (main)</span>
+                                <div class="terminal-actions">
+                                    <button id="clear-term-btn" class="term-action-btn" title="Clear Console">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="terminal-screen" class="terminal-screen">
+                                <div class="term-line system-msg">PyPanel Console initialized. Press 'Run Code' or Ctrl+Enter to execute.</div>
+                                <div class="term-line prompt-line"><span class="prompt-symbol">PS C:\\Users\\user\\CodingNinjas_AI\\Practise\\Code files&gt;</span> <span class="cursor-blink"></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diagnostics Tab -->
+                    <div id="tab-metrics" class="tab-pane">
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-icon"><i class="fa-solid fa-clock"></i></div>
+                                <div class="metric-details">
+                                    <h3>Execution Time</h3>
+                                    <p id="metric-execution-time">0.00s</p>
+                                    <span>Subprocess timeout: 5.00s</span>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-icon"><i class="fa-solid fa-circle-check"></i></div>
+                                <div class="metric-details">
+                                    <h3>Last Return Status</h3>
+                                    <p id="metric-exit-status">N/A</p>
+                                    <span id="metric-exit-code">Exit Code: -</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 4. Right Sidebar: Gemini AI Chat Assistant (Cursor-like sidebar) -->
+        <section class="pane pane-chat" id="chat-sidebar">
+            <div class="sidebar-header">
+                <span>GEMINI CHAT</span>
+                <div class="sidebar-header-actions">
+                    <i class="fa-solid fa-plus" title="New Session"></i>
+                    <i class="fa-solid fa-gear" title="Configure Copilot"></i>
+                </div>
+            </div>
+            
+            <div class="ai-assistant-container">
+                <div class="ai-chat-history" id="ai-chat-history">
+                    <div class="ai-msg ai-system">
+                        <div class="msg-avatar"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <div class="msg-bubble">
+                            <p>Hello! I am your <strong>Antigravity AI Assistant</strong>. I am integrated directly into your editor.</p>
+                            <ul>
+                                <li>Ask me to write scripts or algorithms.</li>
+                                <li>Click <strong>Explain Error</strong> in the terminal for instant debugging guidance.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Prompt Input Bar -->
+                <div class="ai-input-bar">
+                    <input type="text" id="ai-prompt-input" placeholder="Ask Gemini to generate or edit code..." autocomplete="off">
+                    <button id="ai-send-btn" class="btn btn-accent"><i class="fa-solid fa-arrow-up"></i></button>
+                </div>
+                
+                <div class="ai-quick-actions">
+                    <button id="ai-explain-btn" class="quick-action-btn"><i class="fa-solid fa-lightbulb"></i> Explain Active</button>
+                    <button id="ai-refactor-btn" class="quick-action-btn"><i class="fa-solid fa-arrows-spin"></i> Refactor</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Toast Notification Wrapper -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Monaco Editor Loader Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.min.js"></script>
+    <!-- Custom Application Javascript -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
